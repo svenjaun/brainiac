@@ -7,10 +7,8 @@ const client = new Discord.Client(
     messageCacheLifetime: 240,
     messageSweepInterval: 300
   });
-require('dotenv').config()
-const prefix = process.env.prefix;
-const token = process.env.token;
-const giphyToken = process.env.giphyToken;
+
+const { prefix, token, giphyToken } = require('./config.json')
 const colors = require('./colours.json')
 const GiphyApiClient = require('giphy-js-sdk-core')
 
