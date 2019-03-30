@@ -8,8 +8,6 @@ jobs:
     - stage: deploy
       node_js: 10
       script: bash ./deploy.sh
-      env:
-        - PREFIX="!"
 cache:
   directories:
     - node_modules
