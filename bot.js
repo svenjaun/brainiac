@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const client = new Discord.Client(
+const bot = new Discord.Client(
   {
     disabledEvents: ["TYPING_START"],
     disableEveryone: true,
@@ -7,55 +7,52 @@ const client = new Discord.Client(
     messageCacheLifetime: 240,
     messageSweepInterval: 300
   });
+const fs = require('fs')
+require('dotenv').config()
+const token = process.env.TOKEN
+const prefix = process.env.PREFIX
 
-const { prefix, token, giphyToken } = require('./config.json')
-const colors = require('./colours.json')
-const GiphyApiClient = require('giphy-js-sdk-core')
+bot.commands = new Discord.Collection();
+bot.aliases = new Discord.Collection();
 
+fs.readdir("./commands/", (err, files) => {
+  if (err) return console.log(err)
+  let jsfile = files.filter(f => f.split(".").pop() === "js")
+  if (jsfile.length <= 0) {
+    return console.log("[LOGS] Couldn't Find Commands!");
+  }
 
+  jsfile.forEach((f, i) => {
+    let pull = require(`./commands/${f}`);
+    bot.commands.set(pull.config.name, pull);
+    pull.config.aliases.forEach(alias => {
+      bot.aliases.set(alias, pull.config.name)
+    });
+  });
+});
 
-client.on('ready', () => {
-  console.log('Bot is ready...')
-  client.user.setStatus('I am better than you!')
-  client.user.setActivity('Making memes', { type: "STREAMING" })
+bot.on("message", async message => {
+  if (message.author.bot || message.channel.type === "dm") return;
+
+  let messageArray = message.content.split(" ")
+  let cmd = messageArray[0];
+  let args = messageArray.slice(1);
+
+  if (!message.content.startsWith(prefix)) return;
+  let commandfile = bot.commands.get(cmd.slice(prefix.length)) || bot.commands.get(bot.aliases.get(cmd.slice(prefix.length)))
+  if (commandfile) commandfile.run(bot, message, args)
 })
-  .on("disconnect", async () => console.log(client.user.username + " is disconnecting..."))
-  .on("reconnecting", async () => console.log(client.user.username + "Bot reconnecting..."))
-  .on("error", async err => console.log("Client error: " + err))
-  .on("warn", async info => console.log("Client warning: " + info))
-  .on("message", message => {
-    if (message.author.bot || message.channel.type === "dm") return
-
-    let messageArray = message.content.split(" ")
-    let cmd = messageArray[0]
-    let args = messageArray.slice(1)
-
-    if (cmd === prefix + "hello") {
-      giphy = GiphyApiClient(giphyToken)
-      giphy.search('gifs', { "q": "fail" }).then((response) => {
-        return message.channel.send('pong!' + "Your ping is: " + client.ping, {
-          files: [Response.data[Math.floor((Math.random() * 10) + 1) % response.data.length].images.fixed_height.url]
-        }).catch(() => {
-          message.channel.send("Error")
-        })
-      })
-    }
-
-    if (cmd === prefix + "Info") {
-      let embed = new Discord.RichEmbed()
-      .setColor(colors.blueviolet)
-      .setTitle("UserInfo")
-      .setAuthor(message.guild.name + " Info", message.guild.iconURL)
-      .setThumbnail(message.guild.iconURL)
-      .addField("**Guild Name:**", message.guild.name, true)
-      .addField("**Guild Owner:**", message.guild.owner, true)
-      .addField("**Member Count:**", message.guild.memberCount, true)
-      .addField("**Role Count:**", message.guild.roles.size, true)
-      .setFooter("Here could be your advertising", client.user.displayAvatarURL)
-      message.channel.send({embed: embed})
-    }
-  })
 
 
-
-client.login(token)
+bot.on("disconnect", async () => console.log(bot.user.username + " is disconnecting..."))
+bot.on("reconnecting", async () => console.log(bot.user.username + "Bot reconnecting..."))
+bot.on("error", async err => console.log("Client error: " + err))
+bot.on("warn", async info => console.log("Client warning: " + info))
+bot.on('guildMemberAdd', guildMember => {
+  guildMember.setNickname("SUB2PEWDS", "SUB2PEWDS")
+})
+bot.on('ready', () => {
+  console.log('Bot is ready...')
+  bot.user.setActivity('Making memes', { type: "LISTENING" })
+})
+bot.login(token)
