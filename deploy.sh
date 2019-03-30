@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-
+unset PREFIX
 # For revert branches, do nothing
 if [[ "$TRAVIS_BRANCH" == revert-* ]] || [[ "$TRAVIS_BRANCH" == dependabot/* ]]; then
   echo -e "\e[36m\e[1mBuild triggered for reversion branch \"${TRAVIS_BRANCH}\" - doing nothing."
