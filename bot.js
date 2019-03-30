@@ -21,7 +21,6 @@ fs.readdir("./commands/", (err, files) => {
   if (jsfile.length <= 0) {
     return console.log("[LOGS] Couldn't Find Commands!");
   }
-
   jsfile.forEach((f, i) => {
     let pull = require(`./commands/${f}`);
     bot.commands.set(pull.config.name, pull);
@@ -39,8 +38,10 @@ bot.on("message", async message => {
   let args = messageArray.slice(1);
 
   if (!message.content.startsWith(prefix)) return;
+  console.log("asdasdd");
   let commandfile = bot.commands.get(cmd.slice(prefix.length)) || bot.commands.get(bot.aliases.get(cmd.slice(prefix.length)))
   if (commandfile) commandfile.run(bot, message, args)
+  
 })
 
 
