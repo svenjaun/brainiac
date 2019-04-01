@@ -52,6 +52,12 @@ bot.on('guildMemberAdd', guildMember => {
 })
 bot.on('ready', () => {
   console.log('Bot is ready...')
-  bot.user.setActivity('Making memes', { type: "LISTENING" })
+  let states = [
+    `${prefix}help`,
+    `over ${bot.users.size} users!`
+  ]
+  setInterval(() => {
+    bot.user.setActivity(states[Math.floor(Math.random() * states.length)], { type: "WATCHING"})
+  }, 5000)
 })
 bot.login(token)
