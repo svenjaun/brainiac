@@ -3,6 +3,9 @@ const colors = require('./../colours.json')
 require('dotenv').config()
 const fs = require('fs')
 const prefix = process.env.PREFIX
+const giphyToken = process.env.GIPHYTOKEN
+const GiphyApiClient = require('giphy-js-sdk-core')
+giphy = GiphyApiClient(giphyToken)
 var commands = []
 
 fs.readdir("./commands/", (err, files) => {
@@ -51,6 +54,15 @@ module.exports.run = async (bot, message, args) => {
         message.channel.send(embed).then(m => m.delete(10000))
         message.author.send(Sembed)
     }
+    giphy.search('gifs', { "q": "help" })
+    .then((response) => {
+        var responseFinal = response.data[Math.floor((Math.random() * 10) + 1) % response.data.length]
+        message.channel.send({
+            files: [responseFinal.images.fixed_height.url]
+        }).then(m => m.delete(10000))
+    }).catch((e) => {
+        console.log(e)
+    })
 }
 
 module.exports.config = {
