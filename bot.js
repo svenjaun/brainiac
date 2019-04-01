@@ -39,9 +39,7 @@ bot.on("message", async message => {
   if (!message.content.startsWith(prefix)) return;
   let commandfile = bot.commands.get(cmd.slice(prefix.length)) || bot.commands.get(bot.aliases.get(cmd.slice(prefix.length)))
   if (commandfile) commandfile.run(bot, message, args)
-  
 })
-
 
 bot.on("disconnect", async () => console.log(bot.user.username + " is disconnecting..."))
 bot.on("reconnecting", async () => console.log(bot.user.username + "Bot reconnecting..."))
@@ -52,6 +50,12 @@ bot.on('guildMemberAdd', guildMember => {
 })
 bot.on('ready', () => {
   console.log('Bot is ready...')
-  bot.user.setActivity('Making memes', { type: "LISTENING" })
+  let statuses = [
+    `${prefix}help`,
+    `over ${bot.users.size} users!`
+  ]
+  setInterval(() => {
+    bot.user.setActivity(statuses[Math.floor(Math.random() * statuses.length)], { type: "PLAYING"})
+  }, 5000)
 })
 bot.login(token)

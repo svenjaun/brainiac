@@ -19,6 +19,7 @@ module.exports.config = {
     name: "serverinfo",
     aliases: ["serverinfo", "info", "Desc", "Info", "ServerInfo", "Serverinfo"],
     description: "Lists Guild infos",
+    usage: "!serverinfo",
     noalias: "No Aliases",
     accessableby: "Members"
 }
