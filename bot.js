@@ -30,7 +30,7 @@ fs.readdir("./commands/", (err, files) => {
   })
 })
 
-bot.on("message", async message => {
+bot.on("message", async (message) => {
   if (message.author.bot || message.channel.type === "dm") return;
   let messageArray = message.content.split(" ")
   let cmd = messageArray[0];
@@ -55,7 +55,7 @@ bot.on('ready', () => {
     `over ${bot.users.size} users!`
   ]
   setInterval(() => {
-    bot.user.setActivity(statuses[Math.floor(Math.random() * statuses.length)], { type: "PLAYING"})
+    bot.user.setActivity(statuses[Math.floor(Math.random() * statuses.length)], { type: "PLAYING" })
   }, 5000)
 })
 bot.login(token)
