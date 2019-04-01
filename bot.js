@@ -11,6 +11,10 @@ const fs = require('fs')
 require('dotenv').config()
 const token = process.env.TOKEN
 const prefix = process.env.PREFIX
+let statuses = [
+  `${prefix}help`,
+  `over ${bot.users.size} users!`
+]
 
 bot.commands = new Discord.Collection()
 bot.aliases = new Discord.Collection()
@@ -39,9 +43,7 @@ bot.on("message", async message => {
   if (!message.content.startsWith(prefix)) return;
   let commandfile = bot.commands.get(cmd.slice(prefix.length)) || bot.commands.get(bot.aliases.get(cmd.slice(prefix.length)))
   if (commandfile) commandfile.run(bot, message, args)
-  
 })
-
 
 bot.on("disconnect", async () => console.log(bot.user.username + " is disconnecting..."))
 bot.on("reconnecting", async () => console.log(bot.user.username + "Bot reconnecting..."))
@@ -52,12 +54,8 @@ bot.on('guildMemberAdd', guildMember => {
 })
 bot.on('ready', () => {
   console.log('Bot is ready...')
-  let states = [
-    `${prefix}help`,
-    `over ${bot.users.size} users!`
-  ]
   setInterval(() => {
-    bot.user.setActivity(states[Math.floor(Math.random() * states.length)], { type: "WATCHING"})
+    bot.user.setActivity(statuses[Math.floor(Math.random() * statuses.length)], { type: "WATCHING"})
   }, 5000)
 })
 bot.login(token)
