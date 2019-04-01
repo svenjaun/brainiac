@@ -2,7 +2,6 @@ const Discord = require("discord.js")
 const colours = require("../colours.json")
 const GiphyApiClient = require('giphy-js-sdk-core')
 const giphyToken = process.env.GIPHYTOKEN
-giphy = GiphyApiClient(giphyToken)
 
 module.exports.run = async (bot, message, args) => {
     if (!message.member.hasPermission("MANAGE_ROLES") || !message.guild.owner) return message.channel.send("You dont have permission to use this command.")
@@ -22,7 +21,7 @@ module.exports.run = async (bot, message, args) => {
                 color: "#514f48",
                 permissions: []
             })
-            message.guild.channels.forEach(async (channel, id) => {
+            message.guild.channels.forEach(async (channel) => {
                 await channel.overwritePermissions(muterole, {
                     SEND_MESSAGES: false,
                     ADD_REACTIONS: false,
@@ -40,7 +39,7 @@ module.exports.run = async (bot, message, args) => {
         message.delete()
         mute.send(`Hello, you have been muted in ${message.guild.name} for: ${reason}`)
             .catch(err => console.log(err))
-        giphy.search('gifs', { "q": "mute" })
+        GiphyApiClient(giphyToken).search('gifs', { "q": "mute" })
             .then((response) => {
                 var responseFinal = response.data[Math.floor((Math.random() * 10) + 1) % response.data.length]
                 message.channel.send(`${mute.user.username} was successfully muted.`, {
@@ -63,7 +62,7 @@ module.exports.run = async (bot, message, args) => {
     message.guild.channels.find(c => c.name === "logs")
         .send(embed)
         .catch((e) => {
-            console.log("Channel 'logs' doesn't exists")
+            console.log("Channel 'logs' doesn't exists" + e)
         })
 }
 
