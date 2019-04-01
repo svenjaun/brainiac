@@ -29,6 +29,7 @@ module.exports.run = async (bot, message, args) => {
             .setDescription(`The bot prefix is: ${prefix}\n\n**Command:** ${command.config.name}\n
             **Description:** ${command.config.description || "No Description"}\n
             **Accessable by:** ${command.config.accessableby || "Members"}\n
+            **Accessable by:** ${command.config.usage || "No Usages"}\n
             **Aliases:** ${command.config.aliases}`)
             message.channel.send(SHembed);
         }}
@@ -55,6 +56,7 @@ module.exports.run = async (bot, message, args) => {
 module.exports.config = {
     name: "help",
     aliases: ["h", "halp", "commands", "plshelpme"],
+    usage: "!help or !help mute",
     description: "Lists all Commands",
     accessableby: "Members"
 }
