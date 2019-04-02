@@ -1,4 +1,6 @@
 # Dependency directories
 node_modules/
 config.json
+.env/
+/.env
 .env

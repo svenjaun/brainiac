@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
+const prefix = process.env.PREFIX
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (message, args) => {
     if (!message.member.hasPermission("MANAGE_ROLES") || !message.guild.owner) return message.channel.send("You dont have permission to use this command.");
 
     if (!message.guild.me.hasPermission(["MANAGE_ROLES", "ADMINISTRATOR"])) return message.channel.send("I don't have permission to add roles!")
@@ -37,7 +38,7 @@ module.exports.run = async (bot, message, args) => {
 module.exports.config = {
     name: "unmute",
     description: "Unmutes a member!",
-    usage: "!unmute <user> <reason>",
+    usage: `${prefix}unmute <user> <reason>`,
     accessableby: "Members",
     aliases: ["unm", "speak"]
 }

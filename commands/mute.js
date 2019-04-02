@@ -2,8 +2,9 @@ const Discord = require("discord.js")
 const colours = require("../colours.json")
 const GiphyApiClient = require('giphy-js-sdk-core')
 const giphyToken = process.env.GIPHYTOKEN
+const prefix = process.env.PREFIX
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (message, args) => {
     if (!message.member.hasPermission("MANAGE_ROLES") || !message.guild.owner) return message.channel.send("You dont have permission to use this command.")
     if (!message.guild.me.hasPermission(["MANAGE_ROLES", "ADMINISTRATOR"])) return message.channel.send("I don't have permission to add roles!")
 
@@ -11,7 +12,7 @@ module.exports.run = async (bot, message, args) => {
     if (!mute) return message.channel.send("Please supply a user to be muted!")
 
     let reason = args.slice(1).join(" ")
-    if (!reason) reason = "No reason"
+    if (!reason) reason = "No reason given"
 
     let muterole = message.guild.roles.find(r => r.name === "Muted")
     if (!muterole) {
@@ -69,7 +70,7 @@ module.exports.run = async (bot, message, args) => {
 module.exports.config = {
     name: "mute",
     description: "Mutes a member in the discord!",
-    usage: "!mute <user> <reason>",
+    usage: `${prefix}mute <user> <reason>`,
     accessableby: "Members",
     aliases: ["m", "nospeak", "shutthefuckup", "stfu"]
 }
