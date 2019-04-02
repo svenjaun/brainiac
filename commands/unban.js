@@ -13,7 +13,7 @@ module.exports.run = async (message, args) => {
     if (!message.guild.me.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("I don't have permission to perform this command")
 
     unbanMember.send(`Hello, you have been unbanned from ${message.guild.name}`).then(() =>
-        message.guild.unban(unbanMember)).catch(err => console.log(err))
+        message.guild.unban(unbanMember)).catch(console.error)
 
     message.channel.send(`**${unbanMember.user.tag}** has been unbanned`).then(m => m.delete(5000))
 
@@ -21,7 +21,7 @@ module.exports.run = async (message, args) => {
         .setColor(colours.redlight)
         .setAuthor(`${message.guild.name} Modlogs`, message.guild.iconURL)
         .addField("Moderation:", "unban")
-        .addField("User:", unbanMember.user.username)
+        .addField("Unbanned user:", unbanMember.user.username)
         .addField("Moderator:", message.author.username)
         .addField("Date:", message.createdAt.toLocaleString())
 

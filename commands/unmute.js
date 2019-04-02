@@ -17,7 +17,7 @@ module.exports.run = async (message, args) => {
 
     mute.removeRole(muterole.id).then(() => {
         message.delete()
-        mute.send(`Hello, you have been unmuted in ${message.guild.name} for: ${reason}`).catch(err => console.log(err))
+        mute.send(`Hello, you have been unmuted in ${message.guild.name} for: ${reason}`).catch(console.error)
         message.channel.send(`${mute.user.username} was unmuted!`)
     })
 
@@ -25,7 +25,7 @@ module.exports.run = async (message, args) => {
         .setColor("RED")
         .setAuthor(`${message.guild.name} Modlogs`, message.guild.iconURL)
         .addField("Moderation:", "unmute")
-        .addField("mute:", mute.user.username)
+        .addField("Unmuted User:", mute.user.username)
         .addField("Moderator:", message.author.username)
         .addField("Reason:", reason)
         .addField("Date:", message.createdAt.toLocaleString())

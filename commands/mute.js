@@ -39,32 +39,28 @@ module.exports.run = async (message, args) => {
     mute.addRole(muterole.id).then(() => {
         message.delete()
         mute.send(`Hello, you have been muted in ${message.guild.name} for: ${reason}`)
-            .catch(err => console.log(err))
+        .catch(console.error)
         GiphyApiClient(giphyToken).search('gifs', { "q": "mute" })
             .then((response) => {
                 var responseFinal = response.data[Math.floor((Math.random() * 10) + 1) % response.data.length]
                 message.channel.send(`${mute.user.username} was successfully muted.`, {
                     files: [responseFinal.images.fixed_height.url]
                 })
-            }).catch((e) => {
-                console.log(e)
-            })
+            }).catch(console.error)
     })
 
     let embed = new Discord.RichEmbed()
         .setColor(colours.redlight)
         .setAuthor(`${message.guild.name} Modlogs`, message.guild.iconURL)
         .addField("Moderation:", "mute")
-        .addField("mute:", mute.user.username)
+        .addField("Muted user:", mute.user.username)
         .addField("Moderator:", message.author.username)
         .addField("Reason:", reason)
         .addField("Date:", message.createdAt.toLocaleString())
 
     message.guild.channels.find(c => c.name === "logs")
         .send(embed)
-        .catch((e) => {
-            console.log("Channel 'logs' doesn't exists" + e)
-        })
+        .catch(console.error)
 }
 
 module.exports.config = {
