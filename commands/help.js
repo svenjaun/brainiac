@@ -68,7 +68,7 @@ module.exports.run = async (bot, message, args) => {
 module.exports.config = {
     name: "help",
     aliases: ["h", "halp", "commands", "plshelpme"],
-    usage: "!help or !help mute",
+    usage: `${prefix}!help or ${prefix}help mute`,
     description: "Lists all Commands",
     accessableby: "Members"
 }

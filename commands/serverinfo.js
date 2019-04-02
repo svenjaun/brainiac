@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const colors = require('./../colours.json')
+const prefix = process.env.PREFIX
 
 module.exports.run = async (bot, message) => {
     let embed = new Discord.RichEmbed()
@@ -19,7 +20,6 @@ module.exports.config = {
     name: "serverinfo",
     aliases: ["serverinfo", "info", "Desc", "Info", "ServerInfo", "Serverinfo"],
     description: "Lists Guild infos",
-    usage: "!serverinfo",
-    noalias: "No Aliases",
+    usage: `${prefix}serverinfo`,
     accessableby: "Members"
 }
