@@ -3,7 +3,7 @@ const colours = require("../colours.json")
 const prefix = process.env.PREFIX
 
 
-module.exports.run = async (message, args) => {
+module.exports.run = async (bot, message, args) => {
 
    if(!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("You do not have permission to perform this command!")
 
@@ -13,7 +13,7 @@ module.exports.run = async (message, args) => {
    let days = args.slice(1).join(" ")
    let reason = args.slice(2).join(" ")
    if (!/^\+?(0|[1-9]\d*)$/.test(days)) reason = args.slice(1).join(" ")
-   else if(days > Number.MAX_SAFE_INTEGER) days = 1
+   else if(days > 7) days = 7
    if(!reason) reason = "No reason given!"
 
    if(!message.guild.me.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("I dont have permission to perform this command")
@@ -38,7 +38,7 @@ module.exports.run = async (message, args) => {
 
 module.exports.config = {
     name: "softban",
-    description: "Softbans a user from the guild!",
+    description: "Softbans a user from the guild! Number of days is maximal 7",
     usage: `${prefix}softban <user> <number of days of messages to delete> <reason>`,
     accessableby: "Administrators",
     aliases: ["sb", "sbanish", "sremove"]

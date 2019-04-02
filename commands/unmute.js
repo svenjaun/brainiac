@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const prefix = process.env.PREFIX
 
-module.exports.run = async (message, args) => {
+module.exports.run = async (bot, message, args) => {
     if (!message.member.hasPermission("MANAGE_ROLES") || !message.guild.owner) return message.channel.send("You dont have permission to use this command.");
 
     if (!message.guild.me.hasPermission(["MANAGE_ROLES", "ADMINISTRATOR"])) return message.channel.send("I don't have permission to add roles!")
