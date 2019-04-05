@@ -5,6 +5,8 @@ const fs = require('fs')
 const prefix = process.env.PREFIX
 const giphyToken = process.env.GIPHYTOKEN
 const GiphyApiClient = require('giphy-js-sdk-core')
+giphy = GiphyApiClient(giphyToken)
+
 var commands = []
 
 fs.readdir("./commands/", (err, files) => {
@@ -54,7 +56,7 @@ module.exports.run = async (bot, message, args) => {
         message.channel.send(embed).then(m => m.delete(10000))
         message.author.send(Sembed)
     }
-    GiphyApiClient(giphyToken).giphy.search('gifs', { "q": "help" })
+    giphy.search('gifs', { "q": "help" })
         .then((response) => {
             var responseFinal = response.data[Math.floor((Math.random() * 10) + 1) % response.data.length]
             message.channel.send({
@@ -68,7 +70,7 @@ module.exports.run = async (bot, message, args) => {
 module.exports.config = {
     name: "help",
     aliases: ["h", "halp", "commands", "plshelpme"],
-    usage: `${prefix}!help or ${prefix}help mute`,
+    usage: `${prefix}help or ${prefix}help mute`,
     description: "Lists all Commands",
     accessableby: "Members"
 }
