@@ -29,7 +29,6 @@ fs.readdir("./commands/", (err, files) => {
     })
   })
 })
-
 bot.on("message", async (message) => {
   if (message.author.bot || message.channel.type === "dm") return;
   let messageArray = message.content.split(" ")

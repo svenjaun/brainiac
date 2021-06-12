@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const prefix = process.env.PREFIX
 
-module.exports.run = async (message, args) => {
+module.exports.run = async (bot, message, args) => {
     if (!message.member.hasPermission("MANAGE_ROLES") || !message.guild.owner) return message.channel.send("You dont have permission to use this command.");
 
     if (!message.guild.me.hasPermission(["MANAGE_ROLES", "ADMINISTRATOR"])) return message.channel.send("I don't have permission to add roles!")
@@ -17,7 +17,7 @@ module.exports.run = async (message, args) => {
 
     mute.removeRole(muterole.id).then(() => {
         message.delete()
-        mute.send(`Hello, you have been unmuted in ${message.guild.name} for: ${reason}`).catch(err => console.log(err))
+        mute.send(`Hello, you have been unmuted in ${message.guild.name} for: ${reason}`).catch(console.error)
         message.channel.send(`${mute.user.username} was unmuted!`)
     })
 
@@ -25,7 +25,7 @@ module.exports.run = async (message, args) => {
         .setColor("RED")
         .setAuthor(`${message.guild.name} Modlogs`, message.guild.iconURL)
         .addField("Moderation:", "unmute")
-        .addField("mute:", mute.user.username)
+        .addField("Unmuted User:", mute.user.username)
         .addField("Moderator:", message.author.username)
         .addField("Reason:", reason)
         .addField("Date:", message.createdAt.toLocaleString())
